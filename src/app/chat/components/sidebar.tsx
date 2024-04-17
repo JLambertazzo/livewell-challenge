@@ -1,9 +1,8 @@
 import { Drawer, Button, Typography, Divider } from "@mui/material";
-import { useState } from "react";
 
 export default function Sidebar() {
   return (
-    <Drawer variant={"permanent"}>
+    <Drawer variant={"permanent"} sx={{ width: "15vw" }}>
       <Typography variant="h3" textAlign={"center"} sx={{ p: 2 }}>
         Livewell
         <br />
