@@ -80,6 +80,12 @@ export default function Page() {
     [conversations]
   );
 
+  const addPartner = (id: UserId) =>
+    setConversations((convos) => [
+      ...convos,
+      { doctor: id, patient: userId, messages: [] },
+    ]);
+
   return (
     <main style={{ height: "100vh" }}>
       <Sidebar
@@ -87,6 +93,7 @@ export default function Page() {
         availablePartners={doctors}
         selectConversation={({ doctor }) => setActivePartner(doctor)}
         activePartner={activePartner}
+        addPartner={addPartner}
       />
       <Chatbox
         messages={getActiveMessages()}

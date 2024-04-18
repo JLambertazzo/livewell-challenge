@@ -13,6 +13,7 @@ export type SidebarProps = {
     members: Pick<Conversation, "patient" | "doctor">
   ) => void;
   activePartner: UserId;
+  addPartner: (partnerId: UserId) => void;
 };
 
 export enum UserRole {
