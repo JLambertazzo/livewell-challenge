@@ -3,17 +3,19 @@
 import Sidebar from "./components/sidebar";
 import Chatbox from "./components/chatbox";
 import { useCallback, useState } from "react";
-import { Message, UserRole } from "./types";
-
-type Conversation = {
-  patient: string;
-  doctor: string;
-  messages: Message[];
-};
+import { Message, UserRole, Conversation, UserId } from "./types";
 
 export default function Page() {
-  const [doctors, setDoctors] = useState(["654-321", "543-216", "432-165"]);
-  const [patients, setPatients] = useState(["123-456", "234-561", "345-612"]);
+  const [doctors, setDoctors] = useState<UserId[]>([
+    "654-321",
+    "543-216",
+    "432-165",
+  ]);
+  const [patients, setPatients] = useState<UserId[]>([
+    "123-456",
+    "234-561",
+    "345-612",
+  ]);
   const [conversations, setConversations] = useState<Conversation[]>([
     {
       patient: "123-456",
@@ -29,9 +31,23 @@ export default function Page() {
         },
       ],
     },
+    {
+      patient: "123-456",
+      doctor: "543-216",
+      messages: [
+        {
+          sender: UserRole.Patient,
+          body: "Hi! I'm looking for a doctor",
+        },
+        {
+          sender: UserRole.Doctor,
+          body: "Hi! I'm a different doctor :)",
+        },
+      ],
+    },
   ]);
-  const [activePartner] = useState("654-321");
-  const userId = "123-456";
+  const [activePartner, setActivePartner] = useState<UserId>("654-321");
+  const userId: UserId = "123-456";
 
   function addMessage(newMessage: Message) {
     const conversation = conversations.find(
@@ -59,9 +75,19 @@ export default function Page() {
     [activePartner, userId, conversations]
   );
 
+  const getActivePartners = useCallback(
+    () => conversations.map((convo) => convo.doctor),
+    [conversations]
+  );
+
   return (
     <main style={{ height: "100vh" }}>
-      <Sidebar />
+      <Sidebar
+        activePartners={getActivePartners()}
+        availablePartners={doctors}
+        selectConversation={({ doctor }) => setActivePartner(doctor)}
+        activePartner={activePartner}
+      />
       <Chatbox
         messages={getActiveMessages()}
         addMessage={addMessage}
