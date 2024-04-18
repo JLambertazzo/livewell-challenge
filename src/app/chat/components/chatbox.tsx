@@ -53,7 +53,7 @@ export default function Chatbox(props: ChatboxProps) {
         <Grid item xs={11} spacing={2}>
           <TextField
             sx={{ width: "100%" }}
-            content={input}
+            value={input}
             onChange={(e) => setInput(e.target.value)}
           />
         </Grid>
