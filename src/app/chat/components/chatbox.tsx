@@ -3,6 +3,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { ChatboxProps, Message } from "../types";
 import { useState } from "react";
 import { UserRole } from "@/app/types/user";
+import useAuth from "@/app/context/user";
 
 type MessageItemProps = {
   message: Message;
@@ -10,13 +11,13 @@ type MessageItemProps = {
 };
 
 function MessageItem(props: MessageItemProps) {
+  const { user } = useAuth();
   return (
     <Box>
       <Typography
         variant="body2"
         sx={{
-          textAlign:
-            props.message.sender === UserRole.Doctor ? "left" : "right",
+          textAlign: props.message.sender === user?.role ? "right" : "left",
         }}
       >
         {props.message.body}

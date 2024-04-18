@@ -9,12 +9,13 @@ import {
 import { SidebarProps } from "../types";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { setUser } from "@/app/context/user";
-import { UserId, UserRole } from "@/app/types/user";
+import { UserId } from "@/app/types/user";
+import useAuth from "@/app/context/user";
 
 export default function Sidebar(props: SidebarProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const router = useRouter();
+  const { user, setUser } = useAuth();
   const menuItemSelect = (id: UserId) => () => {
     props.addPartner(id);
     setAnchorEl(null);

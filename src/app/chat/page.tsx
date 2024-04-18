@@ -5,8 +5,10 @@ import Chatbox from "./components/chatbox";
 import { useCallback, useState } from "react";
 import { Message, Conversation } from "./types";
 import { UserId, UserRole } from "../types/user";
+import useAuth from "../context/user";
 
 export default function Page() {
+  const { user } = useAuth();
   const [doctors, setDoctors] = useState<UserId[]>([
     "654-321",
     "543-216",
@@ -48,7 +50,6 @@ export default function Page() {
     },
   ]);
   const [activePartner, setActivePartner] = useState<UserId>("654-321");
-  const userId: UserId = "123-456";
 
   function addMessage(newMessage: Message) {
     const conversation = conversations.find(
@@ -71,9 +72,9 @@ export default function Page() {
   const getActiveMessages = useCallback(
     () =>
       conversations.find(
-        (convo) => convo.patient === userId && convo.doctor === activePartner
+        (convo) => convo.patient === user?.id && convo.doctor === activePartner
       )?.messages ?? [],
-    [activePartner, userId, conversations]
+    [activePartner, user, conversations]
   );
 
   const getActivePartners = useCallback(
@@ -84,7 +85,7 @@ export default function Page() {
   const addPartner = (id: UserId) =>
     setConversations((convos) => [
       ...convos,
-      { doctor: id, patient: userId, messages: [] },
+      { doctor: id, patient: user?.id ?? "0-0", messages: [] },
     ]);
 
   return (
@@ -99,7 +100,7 @@ export default function Page() {
       <Chatbox
         messages={getActiveMessages()}
         addMessage={addMessage}
-        userId={userId}
+        userId={user?.id ?? "0-0"}
       />
     </main>
   );

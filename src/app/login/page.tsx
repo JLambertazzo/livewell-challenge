@@ -2,14 +2,15 @@
 
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import { setUser } from "../context/user";
 import { UserRole } from "../types/user";
 import { useRouter } from "next/navigation";
+import useAuth from "../context/user";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const { setUser } = useAuth();
 
   const handleSubmit = () => {
     let success = false;
