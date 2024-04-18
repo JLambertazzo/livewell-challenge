@@ -1,6 +1,6 @@
 import { Box, Typography, Button, Grid, Stack, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { ChatboxProps, Message } from "../types";
+import { ChatboxProps, Message, UserRole } from "../types";
 import { useState } from "react";
 
 type MessageItemProps = {
@@ -14,7 +14,8 @@ function MessageItem(props: MessageItemProps) {
       <Typography
         variant="body2"
         sx={{
-          textAlign: props.message.author.startsWith("6") ? "left" : "right",
+          textAlign:
+            props.message.sender === UserRole.Doctor ? "left" : "right",
         }}
       >
         {props.message.body}
@@ -27,7 +28,7 @@ export default function Chatbox(props: ChatboxProps) {
   const [input, setInput] = useState("");
 
   function submitInput() {
-    props.addMessage({ author: props.userId, body: input });
+    props.addMessage({ sender: UserRole.Patient, body: input });
     setInput("");
   }
 

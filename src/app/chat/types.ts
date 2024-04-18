@@ -4,7 +4,12 @@ export type ChatboxProps = {
   userId: string;
 };
 
+export enum UserRole {
+  Doctor = "doctor",
+  Patient = "patient",
+}
+
 export type Message = {
-  author: string;
+  sender: UserRole;
   body: string;
 };
