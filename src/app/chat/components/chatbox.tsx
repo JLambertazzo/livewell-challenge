@@ -1,7 +1,8 @@
 import { Box, Typography, Button, Grid, Stack, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { ChatboxProps, Message, UserRole } from "../types";
+import { ChatboxProps, Message } from "../types";
 import { useState } from "react";
+import { UserRole } from "@/app/types/user";
 
 type MessageItemProps = {
   message: Message;

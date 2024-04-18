@@ -1,4 +1,4 @@
-export type UserId = `${number}-${number}`;
+import { UserId, UserRole } from "../types/user";
 
 export type ChatboxProps = {
   messages: Message[];
@@ -15,11 +15,6 @@ export type SidebarProps = {
   activePartner: UserId;
   addPartner: (partnerId: UserId) => void;
 };
-
-export enum UserRole {
-  Doctor = "doctor",
-  Patient = "patient",
-}
 
 export type Message = {
   sender: UserRole;

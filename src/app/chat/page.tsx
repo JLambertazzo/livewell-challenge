@@ -3,7 +3,8 @@
 import Sidebar from "./components/sidebar";
 import Chatbox from "./components/chatbox";
 import { useCallback, useState } from "react";
-import { Message, UserRole, Conversation, UserId } from "./types";
+import { Message, Conversation } from "./types";
+import { UserId, UserRole } from "../types/user";
 
 export default function Page() {
   const [doctors, setDoctors] = useState<UserId[]>([

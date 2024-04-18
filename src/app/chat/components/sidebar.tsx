@@ -5,13 +5,16 @@ import {
   Divider,
   Menu,
   MenuItem,
-  unstable_useEnhancedEffect,
 } from "@mui/material";
-import { SidebarProps, UserId } from "../types";
-import { useEffect, useState } from "react";
+import { SidebarProps } from "../types";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { setUser } from "@/app/context/user";
+import { UserId, UserRole } from "@/app/types/user";
 
 export default function Sidebar(props: SidebarProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const router = useRouter();
   const menuItemSelect = (id: UserId) => () => {
     props.addPartner(id);
     setAnchorEl(null);
@@ -19,6 +22,11 @@ export default function Sidebar(props: SidebarProps) {
   const newPartners = props.availablePartners.filter(
     (available) => !props.activePartners.includes(available)
   );
+
+  const logout = () => {
+    setUser(null);
+    router.push("/login");
+  };
 
   return (
     <Drawer variant={"permanent"} sx={{ width: "15vw" }}>
@@ -59,6 +67,9 @@ export default function Sidebar(props: SidebarProps) {
           ))}
         </Menu>
       )}
+      <Button variant="outlined" onClick={logout} sx={{ marginTop: "auto" }}>
+        Logout
+      </Button>
     </Drawer>
   );
 }
