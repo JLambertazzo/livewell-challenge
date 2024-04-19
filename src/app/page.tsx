@@ -3,7 +3,7 @@
 import Sidebar from "./components/sidebar";
 import Chatbox from "./components/chatbox";
 import { useCallback, useEffect, useState } from "react";
-import { Message, Conversation } from "./types";
+import { Message, Conversation, SidebarProps } from "./types";
 import { UserId, UserRole } from "./types/user";
 import { getUsers, useForceAuth } from "./context/user";
 
@@ -15,11 +15,13 @@ export default function Page() {
   const getPartner = (convo: Conversation, role: UserRole) =>
     role === UserRole.Doctor ? convo.patient : convo.doctor;
 
-  const activePartners = conversations.map((convo) =>
-    getPartner(convo, user.role)
+  const getActivePartners = useCallback(
+    () => conversations.map((convo) => getPartner(convo, user.role)),
+    [conversations, user]
   );
+
   const availablePartners = getUsers()
-    .filter((u) => u.id !== user.id && !activePartners.includes(u.id))
+    .filter((u) => u.id !== user.id && !getActivePartners().includes(u.id))
     .map((u) => u.id);
 
   function addMessage(newMessage: Message) {
@@ -48,11 +50,6 @@ export default function Page() {
     [activePartner, user, conversations]
   );
 
-  const getActivePartners = useCallback(
-    () => conversations.map((convo) => convo.doctor),
-    [conversations]
-  );
-
   const addPartner = (id: UserId) => {
     const newConvo =
       user.role === UserRole.Doctor
@@ -74,7 +71,9 @@ export default function Page() {
       <Sidebar
         activePartners={getActivePartners()}
         availablePartners={availablePartners}
-        selectConversation={({ doctor }) => setActivePartner(doctor)}
+        selectConversation={(filter) =>
+          setActivePartner(getPartner({ ...filter, messages: [] }, user.role))
+        }
         activePartner={activePartner}
         addPartner={addPartner}
       />
