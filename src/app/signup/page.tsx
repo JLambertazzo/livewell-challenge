@@ -27,7 +27,7 @@ export default function Signup() {
 
   const handleSubmit = () => {
     createUser({
-      role: UserRole.Doctor,
+      role: role ?? UserRole.Doctor,
       username,
       password,
       fullname,

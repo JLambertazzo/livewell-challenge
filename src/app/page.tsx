@@ -23,7 +23,8 @@ export default function Page() {
   const availablePartners = users.filter(
     (u) =>
       u.id !== user.id &&
-      conversations.every((convo) => getPartner(convo, user.role) !== u.id)
+      conversations.every((convo) => getPartner(convo, user.role) !== u.id) &&
+      u.role !== user.role
   );
 
   function sendMessage(newMessage: Message) {
