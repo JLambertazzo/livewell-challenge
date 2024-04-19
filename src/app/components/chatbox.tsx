@@ -3,6 +3,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { ChatboxProps, Message } from "../types";
 import { useState } from "react";
 import { useForceAuth } from "../context/auth";
+import { UserRole } from "../types/user";
 
 type MessageItemProps = {
   message: Message;
@@ -81,8 +82,13 @@ export default function Chatbox(props: ChatboxProps) {
             />
           ))}
         </Stack>
-        <Typography variant="h4">Chat with {props.partner}</Typography>
-        <Box sx={{ borderRadius: "50%" }}>{props.partner?.at(0)}</Box>
+        <Typography variant="h4">
+          Chat with {props.partner?.role === UserRole.Doctor ? "Dr. " : ""}
+          {props.partner?.username}
+        </Typography>
+        <Box sx={{ borderRadius: "50%" }}>
+          {props.partner?.username.split(" ").map((el) => el.at(0))}
+        </Box>
       </Stack>
     )
   );

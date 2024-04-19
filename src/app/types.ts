@@ -4,16 +4,16 @@ export type ChatboxProps = {
   messages: Message[];
   addMessage: (message: Message) => void;
   userId: UserId;
-  partner: UserId | null;
+  partner: User | undefined;
 };
 
 export type SidebarProps = {
-  activePartners: UserId[];
-  availablePartners: UserId[];
+  activePartners: User[];
+  availablePartners: User[];
   selectConversation: (
     members: Pick<Conversation, UserRole.Patient | UserRole.Doctor>
   ) => void;
-  activePartner: UserId | null;
+  activePartner: UserId | undefined;
   addPartner: (partnerId: UserId) => void;
 };
 

@@ -33,13 +33,16 @@ export default function Sidebar(props: SidebarProps) {
     setAnchorEl(null);
   };
   const newPartners = props.availablePartners.filter(
-    (available) => !props.activePartners.includes(available)
+    (available) => !props.activePartners.some((p) => p.id === available.id)
   );
 
   const logout = () => {
     setUser(null);
     router.push("/login");
   };
+
+  const getHonorific = (role: UserRole) =>
+    role === UserRole.Doctor ? "Dr. " : "";
 
   return (
     <Drawer variant={"permanent"} sx={{ width: "15vw" }}>
@@ -51,20 +54,21 @@ export default function Sidebar(props: SidebarProps) {
       <Divider />
       {props.activePartners.map((partner) => (
         <Button
-          key={partner}
-          variant={partner === props.activePartner ? "outlined" : "text"}
+          key={partner.id}
+          variant={partner.id === props.activePartner ? "outlined" : "text"}
           onClick={() =>
             props.selectConversation(
               user.role === UserRole.Patient
                 ? {
-                    doctor: partner,
+                    doctor: partner.id,
                     patient: user.id,
                   }
-                : { doctor: user.id, patient: partner }
+                : { doctor: user.id, patient: partner.id }
             )
           }
         >
-          {partner}
+          {getHonorific(partner.role)}
+          {partner.username}
         </Button>
       ))}
       <Button
@@ -81,8 +85,9 @@ export default function Sidebar(props: SidebarProps) {
           onClose={() => setAnchorEl(null)}
         >
           {newPartners.map((partner) => (
-            <MenuItem onClick={menuItemSelect(partner)} key={partner}>
-              {partner}
+            <MenuItem onClick={menuItemSelect(partner.id)} key={partner.id}>
+              {getHonorific(partner.role)}
+              {partner.username}
             </MenuItem>
           ))}
         </Menu>

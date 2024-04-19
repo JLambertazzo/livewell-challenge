@@ -30,10 +30,12 @@ const defaultUsers: readonly User[] = [
   {
     id: "123-456",
     role: UserRole.Patient,
+    username: "Julien Bertazzo Lambert",
   },
   {
     id: "654-321",
     role: UserRole.Doctor,
+    username: "Theresa Tam",
   },
 ];
 
@@ -123,17 +125,15 @@ export function useConversationApi(): ConversationController {
         ...convo,
         messages: [...convo.messages, msg],
       };
-      console.log("WHJAT", updatedConvo, conversations);
-      setConversations((prevConversations) => {
-        console.log("and what is", prevConversations);
-        return prevConversations
+      setConversations((prevConversations) =>
+        prevConversations
           .filter(
             (prevConvo) =>
               prevConvo.doctor !== convo.doctor &&
               prevConvo.patient !== convo.patient
           )
-          .concat(updatedConvo);
-      });
+          .concat(updatedConvo)
+      );
       return updatedConvo;
     },
   };

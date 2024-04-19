@@ -4,13 +4,15 @@ import Sidebar from "./components/sidebar";
 import Chatbox from "./components/chatbox";
 import { useCallback, useEffect, useState } from "react";
 import { Message, Conversation, SidebarProps } from "./types";
-import { UserId, UserRole } from "./types/user";
+import { User, UserId, UserRole } from "./types/user";
 import { useForceAuth } from "./context/auth";
 import { useConversationApi, useUserApi } from "./context/api";
 
 export default function Page() {
   const user = useForceAuth();
-  const [activePartner, setActivePartner] = useState<UserId | null>(null);
+  const [activePartner, setActivePartner] = useState<UserId | undefined>(
+    undefined
+  );
   const { users } = useUserApi();
   const { conversations, addMessage, createConversation } =
     useConversationApi();
@@ -18,13 +20,11 @@ export default function Page() {
   const getPartner = (convo: Conversation, role: UserRole) =>
     role === UserRole.Doctor ? convo.patient : convo.doctor;
 
-  const availablePartners = users
-    .filter(
-      (u) =>
-        u.id !== user.id &&
-        conversations.every((convo) => getPartner(convo, user.role) !== u.id)
-    )
-    .map((u) => u.id);
+  const availablePartners = users.filter(
+    (u) =>
+      u.id !== user.id &&
+      conversations.every((convo) => getPartner(convo, user.role) !== u.id)
+  );
 
   function sendMessage(newMessage: Message) {
     const activeConvo = conversations.find(
@@ -67,9 +67,11 @@ export default function Page() {
   return (
     <main style={{ height: "100vh" }}>
       <Sidebar
-        activePartners={conversations.map((convo) =>
-          getPartner(convo, user.role)
-        )}
+        activePartners={conversations
+          .map((convo) =>
+            users.find((u) => u.id === getPartner(convo, user.role))
+          )
+          .filter((el): el is User => el !== undefined)}
         availablePartners={availablePartners}
         selectConversation={(filter) =>
           setActivePartner(getPartner({ ...filter, messages: [] }, user.role))
@@ -81,7 +83,7 @@ export default function Page() {
         messages={getActiveMessages()}
         addMessage={sendMessage}
         userId={user.id}
-        partner={activePartner}
+        partner={users.find((u) => u.id === activePartner)}
       />
     </main>
   );

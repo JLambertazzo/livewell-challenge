@@ -52,6 +52,7 @@ export function useForceAuth(): User {
     user ?? {
       id: "0-0",
       role: UserRole.Patient,
+      username: "",
     }
   );
 }

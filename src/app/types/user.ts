@@ -8,4 +8,5 @@ export enum UserRole {
 export type User = {
   id: UserId;
   role: UserRole;
+  username: string;
 };
