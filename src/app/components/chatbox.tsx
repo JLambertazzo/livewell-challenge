@@ -2,7 +2,7 @@ import { Box, Typography, Button, Grid, Stack, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { ChatboxProps, Message } from "../types";
 import { useState } from "react";
-import { useForceAuth } from "../context/user";
+import { useForceAuth } from "../context/auth";
 
 type MessageItemProps = {
   message: Message;
@@ -73,8 +73,12 @@ export default function Chatbox(props: ChatboxProps) {
           </Grid>
         </Grid>
         <Stack spacing={2} direction="column" sx={{ width: "100%" }}>
-          {props.messages.map((msg) => (
-            <MessageItem key={msg.body} message={msg} userId={props.userId} />
+          {props.messages.map((msg, i) => (
+            <MessageItem
+              key={`${i}-${msg}`}
+              message={msg}
+              userId={props.userId}
+            />
           ))}
         </Stack>
         <Typography variant="h4">Chat with {props.partner}</Typography>

@@ -41,19 +41,6 @@ export function AuthProvider({
   );
 }
 
-export function getUsers(): User[] {
-  return [
-    {
-      id: "123-456",
-      role: UserRole.Patient,
-    },
-    {
-      id: "654-321",
-      role: UserRole.Doctor,
-    },
-  ];
-}
-
 export function useForceAuth(): User {
   const { user } = useAuth();
   const router = useRouter();

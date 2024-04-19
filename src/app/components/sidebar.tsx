@@ -10,7 +10,7 @@ import { Conversation, SidebarProps } from "../types";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { UserId, UserRole } from "@/app/types/user";
-import useAuth, { useForceAuth } from "@/app/context/user";
+import useAuth, { useForceAuth } from "@/app/context/auth";
 
 export default function Sidebar(props: SidebarProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

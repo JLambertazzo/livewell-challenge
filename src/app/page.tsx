@@ -5,42 +5,37 @@ import Chatbox from "./components/chatbox";
 import { useCallback, useEffect, useState } from "react";
 import { Message, Conversation, SidebarProps } from "./types";
 import { UserId, UserRole } from "./types/user";
-import { getUsers, useForceAuth } from "./context/user";
+import { useForceAuth } from "./context/auth";
+import { useConversationApi, useUserApi } from "./context/api";
 
 export default function Page() {
   const user = useForceAuth();
-  const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activePartner, setActivePartner] = useState<UserId | null>(null);
+  const { users } = useUserApi();
+  const { conversations, addMessage, createConversation } =
+    useConversationApi();
 
   const getPartner = (convo: Conversation, role: UserRole) =>
     role === UserRole.Doctor ? convo.patient : convo.doctor;
 
-  const getActivePartners = useCallback(
-    () => conversations.map((convo) => getPartner(convo, user.role)),
-    [conversations, user]
-  );
-
-  const availablePartners = getUsers()
-    .filter((u) => u.id !== user.id && !getActivePartners().includes(u.id))
+  const availablePartners = users
+    .filter(
+      (u) =>
+        u.id !== user.id &&
+        conversations.every((convo) => getPartner(convo, user.role) !== u.id)
+    )
     .map((u) => u.id);
 
-  function addMessage(newMessage: Message) {
-    const conversation = conversations.find(
-      (convo) => getPartner(convo, user.role) === activePartner
+  function sendMessage(newMessage: Message) {
+    const activeConvo = conversations.find(
+      (convo) =>
+        convo[user.role] === user.id &&
+        getPartner(convo, user.role) === activePartner
     );
-    if (!conversation) {
-      console.log("convo not found", conversations, user.id, activePartner);
+    if (!activeConvo) {
       return;
     }
-    const newConversation = {
-      ...conversation,
-      messages: conversation.messages.concat([newMessage]),
-    };
-    setConversations((prevConversations) =>
-      prevConversations
-        .filter((convo) => getPartner(convo, user.role) !== activePartner)
-        .concat(newConversation)
-    );
+    addMessage(activeConvo, newMessage);
   }
 
   const getActiveMessages = useCallback(
@@ -66,13 +61,15 @@ export default function Page() {
             doctor: id,
             messages: [],
           };
-    setConversations((convos) => [...convos, newConvo]);
+    createConversation(newConvo);
   };
 
   return (
     <main style={{ height: "100vh" }}>
       <Sidebar
-        activePartners={getActivePartners()}
+        activePartners={conversations.map((convo) =>
+          getPartner(convo, user.role)
+        )}
         availablePartners={availablePartners}
         selectConversation={(filter) =>
           setActivePartner(getPartner({ ...filter, messages: [] }, user.role))
@@ -82,7 +79,7 @@ export default function Page() {
       />
       <Chatbox
         messages={getActiveMessages()}
-        addMessage={addMessage}
+        addMessage={sendMessage}
         userId={user.id}
         partner={activePartner}
       />

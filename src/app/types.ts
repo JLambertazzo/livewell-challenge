@@ -1,4 +1,4 @@
-import { UserId, UserRole } from "./types/user";
+import { User, UserId, UserRole } from "./types/user";
 
 export type ChatboxProps = {
   messages: Message[];
