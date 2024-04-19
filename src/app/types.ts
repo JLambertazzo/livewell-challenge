@@ -1,9 +1,10 @@
-import { UserId, UserRole } from "../types/user";
+import { UserId, UserRole } from "./types/user";
 
 export type ChatboxProps = {
   messages: Message[];
   addMessage: (message: Message) => void;
   userId: UserId;
+  partner: UserId | null;
 };
 
 export type SidebarProps = {
@@ -12,7 +13,7 @@ export type SidebarProps = {
   selectConversation: (
     members: Pick<Conversation, "patient" | "doctor">
   ) => void;
-  activePartner: UserId;
+  activePartner: UserId | null;
   addPartner: (partnerId: UserId) => void;
 };
 

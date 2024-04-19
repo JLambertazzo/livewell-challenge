@@ -29,7 +29,7 @@ export default function Login() {
     }
     console.log("succ", success);
     if (success) {
-      router.push("/chat");
+      router.push("/");
     }
   };
 

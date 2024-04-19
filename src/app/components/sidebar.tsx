@@ -6,10 +6,10 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { SidebarProps } from "../types";
+import { Conversation, SidebarProps } from "../types";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { UserId } from "@/app/types/user";
+import { UserId, UserRole } from "@/app/types/user";
 import useAuth from "@/app/context/user";
 
 export default function Sidebar(props: SidebarProps) {
@@ -18,6 +18,17 @@ export default function Sidebar(props: SidebarProps) {
   const { user, setUser } = useAuth();
   const menuItemSelect = (id: UserId) => () => {
     props.addPartner(id);
+    const filter: Pick<Conversation, "patient" | "doctor"> =
+      user?.role === UserRole.Doctor
+        ? {
+            doctor: user?.id ?? "0-0",
+            patient: id,
+          }
+        : {
+            doctor: id,
+            patient: user?.id ?? "0-0",
+          };
+    props.selectConversation(filter);
     setAnchorEl(null);
   };
   const newPartners = props.availablePartners.filter(
@@ -42,7 +53,14 @@ export default function Sidebar(props: SidebarProps) {
           key={partner}
           variant={partner === props.activePartner ? "outlined" : "text"}
           onClick={() =>
-            props.selectConversation({ doctor: partner, patient: "0-0" })
+            props.selectConversation(
+              user?.role === UserRole.Patient
+                ? {
+                    doctor: partner,
+                    patient: user?.id ?? "0-0",
+                  }
+                : { doctor: user?.id ?? "0-0", patient: partner }
+            )
           }
         >
           {partner}
