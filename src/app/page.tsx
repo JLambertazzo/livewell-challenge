@@ -5,32 +5,28 @@ import Chatbox from "./components/chatbox";
 import { useCallback, useEffect, useState } from "react";
 import { Message, Conversation } from "./types";
 import { UserId, UserRole } from "./types/user";
-import useAuth, { AuthProvider, getUsers } from "./context/user";
+import { getUsers, useForceAuth } from "./context/user";
 
 export default function Page() {
-  const { user } = useAuth();
+  const user = useForceAuth();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activePartner, setActivePartner] = useState<UserId | null>(null);
-
-  useEffect(() => console.log("user:", user), [user]);
 
   const getPartner = (convo: Conversation, role: UserRole) =>
     role === UserRole.Doctor ? convo.patient : convo.doctor;
 
   const activePartners = conversations.map((convo) =>
-    getPartner(convo, user?.role ?? UserRole.Patient)
+    getPartner(convo, user.role)
   );
   const availablePartners = getUsers()
-    .filter((u) => u.id !== user?.id && !activePartners.includes(u.id))
+    .filter((u) => u.id !== user.id && !activePartners.includes(u.id))
     .map((u) => u.id);
 
   function addMessage(newMessage: Message) {
     const conversation = conversations.find(
-      (convo) =>
-        getPartner(convo, user?.role ?? UserRole.Patient) === activePartner
+      (convo) => getPartner(convo, user.role) === activePartner
     );
     if (!conversation) {
-      console.log("no convo", newMessage, activePartner, user?.id);
       return;
     }
     const newConversation = {
@@ -47,7 +43,7 @@ export default function Page() {
   const getActiveMessages = useCallback(
     () =>
       conversations.find(
-        (convo) => convo.patient === user?.id && convo.doctor === activePartner
+        (convo) => convo.patient === user.id && convo.doctor === activePartner
       )?.messages ?? [],
     [activePartner, user, conversations]
   );
@@ -59,18 +55,17 @@ export default function Page() {
 
   const addPartner = (id: UserId) => {
     const newConvo =
-      user?.role === UserRole.Doctor
+      user.role === UserRole.Doctor
         ? {
-            doctor: user?.id ?? "0-0",
+            doctor: user.id,
             patient: id,
             messages: [],
           }
         : {
-            patient: user?.id ?? "0-0",
+            patient: user.id,
             doctor: id,
             messages: [],
           };
-    console.log(newConvo);
     setConversations((convos) => [...convos, newConvo]);
   };
 
@@ -86,7 +81,7 @@ export default function Page() {
       <Chatbox
         messages={getActiveMessages()}
         addMessage={addMessage}
-        userId={user?.id ?? "0-0"}
+        userId={user.id}
         partner={activePartner}
       />
     </main>

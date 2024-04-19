@@ -2,8 +2,7 @@ import { Box, Typography, Button, Grid, Stack, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { ChatboxProps, Message } from "../types";
 import { useState } from "react";
-import { UserRole } from "@/app/types/user";
-import useAuth from "@/app/context/user";
+import { useForceAuth } from "../context/user";
 
 type MessageItemProps = {
   message: Message;
@@ -11,13 +10,13 @@ type MessageItemProps = {
 };
 
 function MessageItem(props: MessageItemProps) {
-  const { user } = useAuth();
+  const user = useForceAuth();
   return (
     <Box>
       <Typography
         variant="body2"
         sx={{
-          textAlign: props.message.sender === user?.role ? "right" : "left",
+          textAlign: props.message.sender === user.role ? "right" : "left",
         }}
       >
         {props.message.body}
@@ -28,12 +27,11 @@ function MessageItem(props: MessageItemProps) {
 
 export default function Chatbox(props: ChatboxProps) {
   const [input, setInput] = useState("");
-  const { user } = useAuth();
+  const user = useForceAuth();
 
   function submitInput() {
-    props.addMessage({ sender: user?.role ?? UserRole.Patient, body: input });
+    props.addMessage({ sender: user.role, body: input });
     setInput("");
-    console.log("adding to messages", props.messages);
   }
 
   return (

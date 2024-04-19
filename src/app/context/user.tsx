@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import { User, UserRole } from "../types/user";
+import { useRouter } from "next/navigation";
 
 const LOCAL_USER_KEY = "livewell-demo-user";
 
@@ -22,7 +23,6 @@ export function AuthProvider({
   children: ReactNode;
 }): JSX.Element {
   const local = localStorage.getItem(LOCAL_USER_KEY);
-  console.log("got", local);
   const localUser = local ? JSON.parse(local) : null;
   const [user, setUser] = useState<User | null>(localUser);
 
@@ -52,6 +52,21 @@ export function getUsers(): User[] {
       role: UserRole.Doctor,
     },
   ];
+}
+
+export function useForceAuth(): User {
+  const { user } = useAuth();
+  const router = useRouter();
+
+  if (!user) {
+    router.push("/login");
+  }
+  return (
+    user ?? {
+      id: "0-0",
+      role: UserRole.Patient,
+    }
+  );
 }
 
 export default function useAuth() {

@@ -27,7 +27,6 @@ export default function Login() {
       });
       success = true;
     }
-    console.log("succ", success);
     if (success) {
       router.push("/");
     }
