@@ -11,7 +11,7 @@ export type SidebarProps = {
   activePartners: UserId[];
   availablePartners: UserId[];
   selectConversation: (
-    members: Pick<Conversation, "patient" | "doctor">
+    members: Pick<Conversation, UserRole.Patient | UserRole.Doctor>
   ) => void;
   activePartner: UserId | null;
   addPartner: (partnerId: UserId) => void;
@@ -23,7 +23,7 @@ export type Message = {
 };
 
 export type Conversation = {
-  patient: UserId;
-  doctor: UserId;
+  [UserRole.Patient]: UserId;
+  [UserRole.Doctor]: UserId;
   messages: Message[];
 };

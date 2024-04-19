@@ -19,7 +19,7 @@ export default function Sidebar(props: SidebarProps) {
   const user = useForceAuth();
   const menuItemSelect = (id: UserId) => () => {
     props.addPartner(id);
-    const filter: Pick<Conversation, "patient" | "doctor"> =
+    const filter: Pick<Conversation, UserRole.Patient | UserRole.Doctor> =
       user.role === UserRole.Doctor
         ? {
             doctor: user.id,

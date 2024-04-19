@@ -29,6 +29,7 @@ export default function Page() {
       (convo) => getPartner(convo, user.role) === activePartner
     );
     if (!conversation) {
+      console.log("convo not found", conversations, user.id, activePartner);
       return;
     }
     const newConversation = {
@@ -37,7 +38,7 @@ export default function Page() {
     };
     setConversations((prevConversations) =>
       prevConversations
-        .filter((convo) => convo.doctor !== activePartner)
+        .filter((convo) => getPartner(convo, user.role) !== activePartner)
         .concat(newConversation)
     );
   }
@@ -45,7 +46,9 @@ export default function Page() {
   const getActiveMessages = useCallback(
     () =>
       conversations.find(
-        (convo) => convo.patient === user.id && convo.doctor === activePartner
+        (convo) =>
+          convo[user.role] === user.id &&
+          getPartner(convo, user.role) === activePartner
       )?.messages ?? [],
     [activePartner, user, conversations]
   );
