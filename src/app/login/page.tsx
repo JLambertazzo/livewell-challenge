@@ -5,26 +5,23 @@ import { useState } from "react";
 import { UserRole } from "../types/user";
 import { useRouter } from "next/navigation";
 import useAuth from "../context/auth";
+import { useUserApi } from "../context/api";
+import Link from "next/link";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
   const { setUser } = useAuth();
+  const { users } = useUserApi();
 
   const handleSubmit = () => {
     let success = false;
-    if (username === "doctor" && password === "doctor") {
-      setUser({
-        id: "654-321",
-        role: UserRole.Doctor,
-      });
-      success = true;
-    } else if (username === "patient" && password === "patient") {
-      setUser({
-        id: "123-456",
-        role: UserRole.Patient,
-      });
+    const matchingUser = users.find(
+      (u) => u.username === username && u.username === password
+    );
+    if (matchingUser !== undefined) {
+      setUser(matchingUser);
       success = true;
     }
     if (success) {
@@ -63,6 +60,9 @@ export default function Login() {
           Demo user? Try: <br />
           user=doctor pass=doctor <br />
           or user=patient pass=patient
+        </Typography>
+        <Typography variant="caption" textAlign="center">
+          Don&apos;t have an account? <Link href="/signup">Sign up here</Link>
         </Typography>
       </Stack>
     </main>

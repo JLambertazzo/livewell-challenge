@@ -30,12 +30,16 @@ const defaultUsers: readonly User[] = [
   {
     id: "123-456",
     role: UserRole.Patient,
-    username: "Julien Bertazzo Lambert",
+    fullname: "Julien Bertazzo Lambert",
+    username: "patient",
+    password: "patient",
   },
   {
     id: "654-321",
     role: UserRole.Doctor,
-    username: "Theresa Tam",
+    fullname: "Theresa Tam",
+    username: "doctor",
+    password: "doctor",
   },
 ];
 

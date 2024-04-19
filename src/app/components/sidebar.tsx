@@ -84,7 +84,7 @@ export default function Sidebar(props: SidebarProps) {
           sx={{ p: 2 }}
         >
           {getHonorific(partner.role)}
-          {partner.username}
+          {partner.fullname}
         </Button>
       ))}
       <Button
@@ -103,7 +103,7 @@ export default function Sidebar(props: SidebarProps) {
           {newPartners.map((partner) => (
             <MenuItem onClick={menuItemSelect(partner.id)} key={partner.id}>
               {getHonorific(partner.role)}
-              {partner.username}
+              {partner.fullname}
             </MenuItem>
           ))}
         </Menu>

@@ -68,6 +68,9 @@ export default function Page() {
     <main style={{ height: "100vh" }}>
       <Sidebar
         activePartners={conversations
+          .filter(
+            (convo) => convo.doctor === user.id || convo.patient === user.id
+          )
           .map((convo) =>
             users.find((u) => u.id === getPartner(convo, user.role))
           )

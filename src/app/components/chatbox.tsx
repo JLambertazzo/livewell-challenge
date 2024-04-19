@@ -111,7 +111,7 @@ export default function Chatbox(props: ChatboxProps) {
           </Stack>
           <Typography variant="h4" sx={{ mb: 8 }}>
             Chat with {props.partner?.role === UserRole.Doctor ? "Dr. " : ""}
-            {props.partner?.username}
+            {props.partner?.fullname}
           </Typography>
           <Box
             sx={{
@@ -122,7 +122,7 @@ export default function Chatbox(props: ChatboxProps) {
               mb: 2,
             }}
           >
-            {props.partner?.username.split(" ").map((el) => el.at(0))}
+            {props.partner?.fullname.split(" ").map((el) => el.at(0))}
           </Box>
         </Stack>
       </Stack>
