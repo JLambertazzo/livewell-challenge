@@ -19,7 +19,7 @@ function MessageItem(props: MessageItemProps) {
   return (
     <Stack justifyContent={justifyContent} direction="row">
       <Typography
-        variant="body2"
+        variant="body1"
         sx={{
           background: background,
           width: "max-content",
@@ -55,8 +55,8 @@ export default function Chatbox(props: ChatboxProps) {
         justifyContent="flex-start"
         alignItems="center"
         sx={{
-          marginLeft: "15vw",
-          width: "85vw",
+          marginLeft: "14vw",
+          width: "86vw",
           height: "100%",
         }}
       >

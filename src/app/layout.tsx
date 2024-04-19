@@ -1,10 +1,10 @@
 "use client";
 
-import { Inter } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import { AuthProvider } from "./context/auth";
 import { ApiProvider } from "./context/api";
 
-const inter = Inter({ subsets: ["latin"] });
+const dmsans = DM_Sans({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={dmsans.className}>
         <ApiProvider>
           <AuthProvider>{children}</AuthProvider>
         </ApiProvider>

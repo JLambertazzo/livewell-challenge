@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { UserId, UserRole } from "@/app/types/user";
 import useAuth, { useForceAuth } from "@/app/context/auth";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 export default function Sidebar(props: SidebarProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -55,7 +56,12 @@ export default function Sidebar(props: SidebarProps) {
         },
       }}
     >
-      <Typography variant="h3" textAlign={"center"} sx={{ p: 2 }}>
+      <Typography
+        variant="h3"
+        textAlign={"center"}
+        sx={{ p: 2 }}
+        fontFamily="serif"
+      >
         Livewell
         <br />
         Demo
@@ -75,6 +81,7 @@ export default function Sidebar(props: SidebarProps) {
                 : { doctor: user.id, patient: partner.id }
             )
           }
+          sx={{ p: 2 }}
         >
           {getHonorific(partner.role)}
           {partner.username}
@@ -101,7 +108,12 @@ export default function Sidebar(props: SidebarProps) {
           ))}
         </Menu>
       )}
-      <Button variant="outlined" onClick={logout} sx={{ marginTop: "auto" }}>
+      <Button
+        variant="outlined"
+        onClick={logout}
+        sx={{ marginTop: "auto", py: 1 }}
+        startIcon={<LogoutIcon />}
+      >
         Logout
       </Button>
     </Drawer>
