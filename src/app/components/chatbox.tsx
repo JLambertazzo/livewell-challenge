@@ -12,17 +12,27 @@ type MessageItemProps = {
 
 function MessageItem(props: MessageItemProps) {
   const user = useForceAuth();
+  const sentByUser = user.role === props.message.sender;
+  const justifyContent = sentByUser ? "flex-end" : "flex-start";
+  const background = sentByUser ? "lightblue" : "lightgray";
+  const bottomBorderRadius = sentByUser ? "0px 20px" : "20px 0px";
   return (
-    <Box>
+    <Stack justifyContent={justifyContent} direction="row">
       <Typography
         variant="body2"
         sx={{
-          textAlign: props.message.sender === user.role ? "right" : "left",
+          background: background,
+          width: "max-content",
+          py: 0.5,
+          px: 2,
+          borderRadius: `20px 20px ${bottomBorderRadius}`,
+          ml: sentByUser ? 2 : 1,
+          mr: sentByUser ? 1 : 2,
         }}
       >
         {props.message.body}
       </Typography>
-    </Box>
+    </Stack>
   );
 }
 
@@ -31,6 +41,9 @@ export default function Chatbox(props: ChatboxProps) {
   const user = useForceAuth();
 
   function submitInput() {
+    if (input === "") {
+      return;
+    }
     props.addMessage({ sender: user.role, body: input });
     setInput("");
   }
@@ -43,15 +56,15 @@ export default function Chatbox(props: ChatboxProps) {
         alignItems="center"
         sx={{
           marginLeft: "15vw",
-          width: "82vw",
-          height: "95%",
+          width: "85vw",
+          height: "100%",
         }}
       >
         <Grid
           container
           sx={{
             width: "100%",
-            border: "black solid 1px",
+            borderTop: "#dddddd solid 1px",
             p: 2,
           }}
         >
@@ -66,29 +79,52 @@ export default function Chatbox(props: ChatboxProps) {
             <Button
               variant="contained"
               endIcon={<SendIcon />}
-              sx={{ transform: "translateX(-50%)", marginLeft: "50%" }}
+              sx={{
+                transform: "translateX(-50%)",
+                marginLeft: "50%",
+                height: "100%",
+              }}
               onClick={submitInput}
             >
               Send
             </Button>
           </Grid>
         </Grid>
-        <Stack spacing={2} direction="column" sx={{ width: "100%" }}>
-          {props.messages.map((msg, i) => (
-            <MessageItem
-              key={`${i}-${msg}`}
-              message={msg}
-              userId={props.userId}
-            />
-          ))}
+        <Stack
+          direction="column-reverse"
+          justifyContent="flex-start"
+          alignItems="center"
+          sx={{
+            width: "100%",
+            overflowY: "scroll",
+            mb: 2,
+          }}
+        >
+          <Stack spacing={2} direction="column" sx={{ width: "90%", px: 2 }}>
+            {props.messages.map((msg, i) => (
+              <MessageItem
+                key={`${i}-${msg}`}
+                message={msg}
+                userId={props.userId}
+              />
+            ))}
+          </Stack>
+          <Typography variant="h4" sx={{ mb: 8 }}>
+            Chat with {props.partner?.role === UserRole.Doctor ? "Dr. " : ""}
+            {props.partner?.username}
+          </Typography>
+          <Box
+            sx={{
+              borderRadius: "50%",
+              background: "#DDDDDD",
+              p: 4,
+              fontSize: "xx-large",
+              mb: 2,
+            }}
+          >
+            {props.partner?.username.split(" ").map((el) => el.at(0))}
+          </Box>
         </Stack>
-        <Typography variant="h4">
-          Chat with {props.partner?.role === UserRole.Doctor ? "Dr. " : ""}
-          {props.partner?.username}
-        </Typography>
-        <Box sx={{ borderRadius: "50%" }}>
-          {props.partner?.username.split(" ").map((el) => el.at(0))}
-        </Box>
       </Stack>
     )
   );

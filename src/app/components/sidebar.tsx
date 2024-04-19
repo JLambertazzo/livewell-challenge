@@ -45,7 +45,16 @@ export default function Sidebar(props: SidebarProps) {
     role === UserRole.Doctor ? "Dr. " : "";
 
   return (
-    <Drawer variant={"permanent"} sx={{ width: "15vw" }}>
+    <Drawer
+      variant={"permanent"}
+      sx={{
+        width: "15vw",
+        "& .MuiDrawer-paper": {
+          width: "15vw",
+          boxSizing: "border-box",
+        },
+      }}
+    >
       <Typography variant="h3" textAlign={"center"} sx={{ p: 2 }}>
         Livewell
         <br />
