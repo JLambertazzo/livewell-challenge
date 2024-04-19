@@ -6,10 +6,9 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { Conversation, SidebarProps } from "../types";
+import { Conversation, SidebarProps, UserId, UserRole } from "../types";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { UserId, UserRole } from "@/app/types/user";
 import useAuth, { useForceAuth } from "@/app/context/auth";
 import LogoutIcon from "@mui/icons-material/Logout";
 

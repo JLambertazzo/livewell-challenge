@@ -2,7 +2,7 @@
 
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import { UserRole } from "../types/user";
+import { UserRole } from "../types";
 import { useRouter } from "next/navigation";
 import useAuth from "../context/auth";
 import { useUserApi } from "../context/api";

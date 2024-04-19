@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { User, UserRole } from "../types/user";
+import { User, UserRole } from "../types";
 import { useRouter } from "next/navigation";
 
 const LOCAL_USER_KEY = "livewell-demo-user";

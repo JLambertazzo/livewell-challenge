@@ -2,9 +2,8 @@
 
 import Sidebar from "./components/sidebar";
 import Chatbox from "./components/chatbox";
-import { useCallback, useEffect, useState } from "react";
-import { Message, Conversation, SidebarProps } from "./types";
-import { User, UserId, UserRole } from "./types/user";
+import { useCallback, useState } from "react";
+import { Message, Conversation, User, UserId, UserRole } from "./types";
 import { useForceAuth } from "./context/auth";
 import { useConversationApi, useUserApi } from "./context/api";
 

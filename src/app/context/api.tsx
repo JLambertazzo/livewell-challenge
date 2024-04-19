@@ -9,8 +9,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { User, UserId, UserRole } from "../types/user";
-import { Conversation, Message } from "../types";
+import { Conversation, Message, User, UserId, UserRole } from "../types";
 
 const LOCAL_USERS_KEY = "livewell-demo-users";
 const LOCAL_CONVERSATIONS_KEY = "livewell-demo-convos";

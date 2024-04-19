@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { UserRole, isUserRole } from "../types/user";
+import { UserRole, isUserRole } from "../types";
 import { useRouter } from "next/navigation";
 import { useUserApi } from "../context/api";
 import Link from "next/link";
