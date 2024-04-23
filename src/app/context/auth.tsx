@@ -22,11 +22,17 @@ export function AuthProvider({
 }: {
   children: ReactNode;
 }): JSX.Element {
-  const local = localStorage.getItem(LOCAL_USER_KEY);
+  let local = null;
+  if (typeof window !== "undefined") {
+    local = localStorage.getItem(LOCAL_USER_KEY);
+  }
   const localUser = local ? JSON.parse(local) : null;
   const [user, setUser] = useState<User | null>(localUser);
 
   useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
     if (user) {
       localStorage.setItem(LOCAL_USER_KEY, JSON.stringify(user));
     } else {

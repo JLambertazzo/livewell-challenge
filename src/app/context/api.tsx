@@ -47,8 +47,12 @@ export function ApiProvider({
 }: {
   children: ReactNode;
 }): JSX.Element {
-  const localUsers = localStorage.getItem(LOCAL_USERS_KEY);
-  const localConvos = localStorage.getItem(LOCAL_CONVERSATIONS_KEY);
+  let localUsers = null;
+  let localConvos = null;
+  if (typeof window !== "undefined") {
+    localUsers = localStorage.getItem(LOCAL_USERS_KEY);
+    localConvos = localStorage.getItem(LOCAL_CONVERSATIONS_KEY);
+  }
   const [users, setUsers] = useState<User[]>(
     localUsers && localUsers !== "undefined"
       ? JSON.parse(localUsers)
@@ -59,6 +63,9 @@ export function ApiProvider({
   );
 
   useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
     if (users) {
       localStorage.setItem(LOCAL_USERS_KEY, JSON.stringify(users));
     } else {
@@ -67,6 +74,9 @@ export function ApiProvider({
   }, [users]);
 
   useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
     if (conversations) {
       localStorage.setItem(LOCAL_USERS_KEY, JSON.stringify(setConversations));
     } else {
